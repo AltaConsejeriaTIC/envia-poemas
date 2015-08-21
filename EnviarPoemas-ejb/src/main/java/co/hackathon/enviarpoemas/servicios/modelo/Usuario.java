@@ -6,47 +6,64 @@
 package co.hackathon.enviarpoemas.servicios.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author aatm
  */
 @Entity
-@Table(name = "USUARIO")
-@XmlRootElement
+@Table(name = "\"USUARIO\"")
 @NamedQueries({
-    })
+    @NamedQuery( name = "Usuario.cuentaPorCorreo", 
+            query = "select count(u) from Usuario u where u.nombreLogin = :correo"),
+    @NamedQuery( name = "Usuario.buscaXCorreoYclave", 
+            query = "select new co.hackathon.enviarpoemas.dto.UsuarioDTO("
+                    + " u.usuarioId, u.nombreLogin, p.nombre)"
+                    + " from Usuario u, Persona p "
+                    + " where u.nombreLogin = :correo"
+                    + " and u.clave = :clave"
+                    + " and u.nombreLogin = p.correoElectronico ")
+})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @SequenceGenerator(
+        name="USUARIO_SEQUENCE_GENERATOR",
+        sequenceName="\"SEQ_USUARIO\"",
+        allocationSize=1
+    )
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "USUARIO_ID")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USUARIO_SEQUENCE_GENERATOR")    
+    @Column(name = "\"USUARIO_ID\"")
     private Integer usuarioId;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "NOMBRE_LOGIN")
+    @Column(name = "\"NOMBRE_LOGIN\"")
     private String nombreLogin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "CLAVE")
+    @Column(name = "\"CLAVE\"")
     private String clave;
-    @JoinColumn(name = "ROL_ID", referencedColumnName = "ROL_ID")
-    @ManyToOne(optional = false)
-    private Rol rolId;
+    @ManyToMany(mappedBy = "usuarioCollection")
+    private Collection<Rol> rolCollection;
 
     public Usuario() {
     }
@@ -85,12 +102,12 @@ public class Usuario implements Serializable {
         this.clave = clave;
     }
 
-    public Rol getRolId() {
-        return rolId;
+    public Collection<Rol> getRolCollection() {
+        return rolCollection;
     }
 
-    public void setRolId(Rol rolId) {
-        this.rolId = rolId;
+    public void setRolCollection(Collection<Rol> rolCollection) {
+        this.rolCollection = rolCollection;
     }
 
     @Override

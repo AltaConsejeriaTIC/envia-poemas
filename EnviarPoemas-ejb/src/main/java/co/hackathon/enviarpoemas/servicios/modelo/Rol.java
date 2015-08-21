@@ -8,40 +8,45 @@ package co.hackathon.enviarpoemas.servicios.modelo;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
-import javax.persistence.OneToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author aatm
  */
 @Entity
-@Table(name = "ROL")
-@XmlRootElement
+@Table(name = "\"ROL\"")
 @NamedQueries({
-    })
+    @NamedQuery(name = "Rol.consultarIdsXUsuarioId", 
+    query = "select r.rolId from Rol r join r.usuarioCollection usuario "
+            + "where usuario.usuarioId = :usuarioId")
+})
 public class Rol implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ROL_ID")
+    @Column(name = "\"ROL_ID\"")
     private Integer rolId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "NOMBRE")
+    @Column(name = "\"NOMBRE\"")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rolId")
+    @JoinTable(name = "\"USUARIO_ROL\"", joinColumns = {
+        @JoinColumn(name = "\"ROL_ID\"", referencedColumnName = "\"ROL_ID\"")}, inverseJoinColumns = {
+        @JoinColumn(name = "\"USUARIO_ID\"", referencedColumnName = "\"USUARIO_ID\"")})
+    @ManyToMany
     private Collection<Usuario> usuarioCollection;
 
     public Rol() {
@@ -72,7 +77,6 @@ public class Rol implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
     public Collection<Usuario> getUsuarioCollection() {
         return usuarioCollection;
     }

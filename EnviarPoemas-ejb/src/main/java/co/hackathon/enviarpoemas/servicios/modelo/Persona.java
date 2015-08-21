@@ -9,8 +9,11 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,26 +24,32 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author aatm
  */
 @Entity
-@Table(name = "PERSONA")
+@Table(name = "\"PERSONA\"")
 @XmlRootElement
 @NamedQueries({
     })
 public class Persona implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @SequenceGenerator(
+        name="PERSONA_SEQUENCE_GENERATOR",
+        sequenceName="\"SEQ_PERSONA\"",
+        allocationSize=1
+    )
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "PERSONA_ID")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSONA_SEQUENCE_GENERATOR")     
+    @Column(name = "\"PERSONA_ID\"")
     private Integer personaId;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "CORREO_ELECTRONICO")
+    @Column(name = "\"CORREO_ELECTRONICO\"")
     private String correoElectronico;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "NOMBRE")
+    @Column(name = "\"NOMBRE\"")
     private String nombre;
 
     public Persona() {

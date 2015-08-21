@@ -1,0 +1,300 @@
+-- Database: enviadorpoemas
+
+-- DROP DATABASE enviadorpoemas;
+
+CREATE DATABASE enviadorpoemas
+  WITH OWNER = postgres
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'en_US.UTF-8'
+       LC_CTYPE = 'en_US.UTF-8'
+       CONNECTION LIMIT = -1;
+
+COMMENT ON DATABASE enviadorpoemas
+  IS 'Base de datos de aplicación que busca y envia poemas a personas.';
+
+
+-- Table: "PERSONA"
+
+-- DROP TABLE "PERSONA";
+
+CREATE TABLE "PERSONA"
+(
+  "PERSONA_ID" integer NOT NULL, -- Identificador de la persona
+  "CORREO_ELECTRONICO" text NOT NULL,
+  "NOMBRE" text NOT NULL, -- Nombre de la persona
+  CONSTRAINT "PK_PERSONA" PRIMARY KEY ("PERSONA_ID")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "PERSONA"
+  OWNER TO postgres;
+COMMENT ON COLUMN "PERSONA"."PERSONA_ID" IS 'Identificador de la persona';
+COMMENT ON COLUMN "PERSONA"."NOMBRE" IS 'Nombre de la persona';
+
+
+
+-- Sequence: "SEQ_PERSONA"
+
+-- DROP SEQUENCE "SEQ_PERSONA";
+
+CREATE SEQUENCE "SEQ_PERSONA"
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 99999999
+  START 1
+  CACHE 1;
+ALTER TABLE "SEQ_PERSONA"
+  OWNER TO postgres;
+
+
+
+-- Table: "AUTOR"
+
+-- DROP TABLE "AUTOR";
+
+CREATE TABLE "AUTOR"
+(
+  "AUTOR_ID" integer NOT NULL, -- Identificación del autor
+  "NOMBRE" text NOT NULL, -- Nombre autor
+  CONSTRAINT "PK_AUTOR" PRIMARY KEY ("AUTOR_ID")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "AUTOR"
+  OWNER TO postgres;
+COMMENT ON TABLE "AUTOR"
+  IS 'Tabla de autores de poemas';
+COMMENT ON COLUMN "AUTOR"."AUTOR_ID" IS 'Identificación del autor';
+COMMENT ON COLUMN "AUTOR"."NOMBRE" IS 'Nombre autor';
+
+
+
+
+-- Sequence: "SEQ_AUTOR"
+
+-- DROP SEQUENCE "SEQ_AUTOR";
+
+CREATE SEQUENCE "SEQ_AUTOR"
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 99999999
+  START 1
+  CACHE 1;
+ALTER TABLE "SEQ_AUTOR"
+  OWNER TO postgres;
+COMMENT ON SEQUENCE "SEQ_AUTOR"
+  IS 'Sequencia de tabla AUTOR';
+
+
+-- Table: "ROL"
+
+-- DROP TABLE "ROL";
+
+CREATE TABLE "ROL"
+(
+  "ROL_ID" integer NOT NULL, -- Identificación del rol
+  "NOMBRE" text NOT NULL, -- Nombre del ROL
+  CONSTRAINT "PK_ROL" PRIMARY KEY ("ROL_ID")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "ROL"
+  OWNER TO postgres;
+COMMENT ON TABLE "ROL"
+  IS 'Roles de usuario, primeramente son:
+- Usuario - 1
+- Administrador - 2';
+COMMENT ON COLUMN "ROL"."ROL_ID" IS 'Identificación del rol';
+COMMENT ON COLUMN "ROL"."NOMBRE" IS 'Nombre del ROL';
+
+
+-- Table: "USUARIO"
+
+-- DROP TABLE "USUARIO";
+
+CREATE TABLE "USUARIO"
+(
+  "USUARIO_ID" integer NOT NULL, -- Identificador de los registros de usuario.
+  "NOMBRE_LOGIN" text NOT NULL, -- Es el mismo correo de la persona.
+  "ROL_ID" integer NOT NULL, -- Id del rol de usuario
+  "CLAVE" text NOT NULL, -- Clave de usuario
+  CONSTRAINT "PK_USUARIO" PRIMARY KEY ("USUARIO_ID"),
+  CONSTRAINT "FK_USUARIO_A_ROL" FOREIGN KEY ("ROL_ID")
+      REFERENCES "ROL" ("ROL_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION, -- Llave foranea de la tabla USUARIO a la tabla ROL
+  CONSTRAINT "UQ_NOMBRE_LOGIN" UNIQUE ("NOMBRE_LOGIN")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "USUARIO"
+  OWNER TO postgres;
+COMMENT ON TABLE "USUARIO"
+  IS 'Tabla de usuarios';
+COMMENT ON COLUMN "USUARIO"."USUARIO_ID" IS 'Identificador de los registros de usuario.';
+COMMENT ON COLUMN "USUARIO"."NOMBRE_LOGIN" IS 'Es el mismo correo de la persona.';
+COMMENT ON COLUMN "USUARIO"."ROL_ID" IS 'Id del rol de usuario';
+COMMENT ON COLUMN "USUARIO"."CLAVE" IS 'Clave de usuario';
+
+COMMENT ON CONSTRAINT "FK_USUARIO_A_ROL" ON "USUARIO" IS 'Llave foranea de la tabla USUARIO a la tabla ROL';
+
+
+-- Index: "FKI_USUARIO_A_ROL"
+
+-- DROP INDEX "FKI_USUARIO_A_ROL";
+
+CREATE INDEX "FKI_USUARIO_A_ROL"
+  ON "USUARIO"
+  USING btree
+  ("ROL_ID");
+
+
+
+-- Sequence: "SEQ_USUARIO"
+
+-- DROP SEQUENCE "SEQ_USUARIO";
+
+CREATE SEQUENCE "SEQ_USUARIO"
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE "SEQ_USUARIO"
+  OWNER TO postgres;
+COMMENT ON SEQUENCE "SEQ_USUARIO"
+  IS 'Secuencia de la tabla USUARIO';
+  
+  
+  -- Table: "CATEGORIA_POEMA"
+
+-- DROP TABLE "CATEGORIA_POEMA";
+
+CREATE TABLE "CATEGORIA_POEMA"
+(
+  "CATEGORIA_ID" integer NOT NULL, -- Llave primaria de tabla CATEGORIA_POEMA
+  "NOMBRE" text NOT NULL, -- Nombre categoria
+  CONSTRAINT "PK_CATEGORIA_POEMA" PRIMARY KEY ("CATEGORIA_ID")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "CATEGORIA_POEMA"
+  OWNER TO postgres;
+COMMENT ON TABLE "CATEGORIA_POEMA"
+  IS 'Categorias de poemas.';
+COMMENT ON COLUMN "CATEGORIA_POEMA"."CATEGORIA_ID" IS 'Llave primaria de tabla CATEGORIA_POEMA';
+COMMENT ON COLUMN "CATEGORIA_POEMA"."NOMBRE" IS 'Nombre categoria';
+
+
+-- Sequence: "SEQ_CATEGORIA_POEMA"
+
+-- DROP SEQUENCE "SEQ_CATEGORIA_POEMA";
+
+CREATE SEQUENCE "SEQ_CATEGORIA_POEMA"
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE "SEQ_CATEGORIA_POEMA"
+  OWNER TO postgres;
+COMMENT ON SEQUENCE "SEQ_CATEGORIA_POEMA"
+  IS 'Sequencia de tabla CATEGORIA_POEMA';
+
+  
+-- Table: "POEMA"
+
+-- DROP TABLE "POEMA";
+
+CREATE TABLE "POEMA"
+(
+  "POEMA_ID" integer NOT NULL, -- Identifica del poema
+  "AUTOR_ID" integer NOT NULL, -- Referencia al autor
+  "TEXTO" text NOT NULL, -- Texto del poema
+  "TITULO" text NOT NULL, -- Titulo del poema
+  "CATEGORIA_ID" integer NOT NULL, -- Referencia a la categoria del poema
+  CONSTRAINT "PK_POEMA" PRIMARY KEY ("POEMA_ID"),
+  CONSTRAINT "FK_POEMA_AUTOR" FOREIGN KEY ("AUTOR_ID")
+      REFERENCES "AUTOR" ("AUTOR_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "FK_POEMA_CATEGORIA" FOREIGN KEY ("CATEGORIA_ID")
+      REFERENCES "CATEGORIA_POEMA" ("CATEGORIA_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "POEMA"
+  OWNER TO postgres;
+COMMENT ON TABLE "POEMA"
+  IS 'Tabla de poemas';
+COMMENT ON COLUMN "POEMA"."POEMA_ID" IS 'Identifica del poema';
+COMMENT ON COLUMN "POEMA"."AUTOR_ID" IS 'Referencia al autor';
+COMMENT ON COLUMN "POEMA"."TEXTO" IS 'Texto del poema';
+COMMENT ON COLUMN "POEMA"."TITULO" IS 'Titulo del poema';
+COMMENT ON COLUMN "POEMA"."CATEGORIA_ID" IS 'Referencia a la categoria del poema';
+
+
+-- Sequence: "SEQ_POEMA"
+
+-- DROP SEQUENCE "SEQ_POEMA";
+
+CREATE SEQUENCE "SEQ_POEMA"
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE "SEQ_POEMA"
+  OWNER TO postgres;
+COMMENT ON SEQUENCE "SEQ_POEMA"
+  IS 'Sequencia de tabla POEMA';
+
+  
+-- Table: "USUARIO_ROL"
+
+-- DROP TABLE "USUARIO_ROL";
+
+CREATE TABLE "USUARIO_ROL"
+(
+  "ROL_ID" integer NOT NULL, -- Identificación del rol
+  "USUARIO_ID" integer NOT NULL, -- Referencia al usuario
+  CONSTRAINT "PK_USUARIO_ROL" PRIMARY KEY ("ROL_ID", "USUARIO_ID"), -- Llave primaria de tabla USARIO_ROL
+  CONSTRAINT "FK_USUARIO_ROL_A_ROL" FOREIGN KEY ("ROL_ID")
+      REFERENCES "ROL" ("ROL_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION, -- Llave foranea de tabla USUARIO_ROL a tabla ROL
+  CONSTRAINT "FK_USUARIO_ROL_A_USUARIO" FOREIGN KEY ("USUARIO_ID")
+      REFERENCES "USUARIO" ("USUARIO_ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION -- Llave foranea de tabla USUARIO_ROL a tabla USUARIO
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "USUARIO_ROL"
+  OWNER TO postgres;
+COMMENT ON TABLE "USUARIO_ROL"
+  IS 'Relación de usuarios y roles';
+COMMENT ON COLUMN "USUARIO_ROL"."ROL_ID" IS 'Identificación del rol';
+COMMENT ON COLUMN "USUARIO_ROL"."USUARIO_ID" IS 'Referencia al usuario';
+
+COMMENT ON CONSTRAINT "PK_USUARIO_ROL" ON "USUARIO_ROL" IS 'Llave primaria de tabla USARIO_ROL';
+COMMENT ON CONSTRAINT "FK_USUARIO_ROL_A_ROL" ON "USUARIO_ROL" IS 'Llave foranea de tabla USUARIO_ROL a tabla ROL';
+COMMENT ON CONSTRAINT "FK_USUARIO_ROL_A_USUARIO" ON "USUARIO_ROL" IS 'Llave foranea de tabla USUARIO_ROL a tabla USUARIO';
+
+
+-- Index: "FKI_USUARIO_ROL_A_USUARIO"
+
+-- DROP INDEX "FKI_USUARIO_ROL_A_USUARIO";
+
+CREATE INDEX "FKI_USUARIO_ROL_A_USUARIO"
+  ON "USUARIO_ROL"
+  USING btree
+  ("USUARIO_ID");
+
+  
+  

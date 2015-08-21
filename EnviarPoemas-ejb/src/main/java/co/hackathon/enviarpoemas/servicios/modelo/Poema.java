@@ -9,10 +9,13 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,31 +26,35 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author aatm
  */
 @Entity
-@Table(name = "POEMA")
+@Table(name = "\"POEMA\"")
 @XmlRootElement
 @NamedQueries({
     })
 public class Poema implements Serializable {
     private static final long serialVersionUID = 1L;
+    @SequenceGenerator(
+        name="POEMA_SEQUENCE_GENERATOR",
+        sequenceName="\"SEQ_POEMA\"",
+        allocationSize=1)
+    
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "POEMA_ID")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="POEMA_SEQUENCE_GENERATOR")     
+    @Column(name = "\"POEMA_ID\"")
     private Integer poemaId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "TEXTO")
+    @Column(name = "\"TEXTO\"")
     private String texto;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "TITULO")
+    @Column(name = "\"TITULO\"")
     private String titulo;
-    @JoinColumn(name = "AUTOR_ID", referencedColumnName = "AUTOR_ID")
+    @JoinColumn(name = "\"AUTOR_ID\"", referencedColumnName = "\"AUTOR_ID\"")
     @ManyToOne(optional = false)
     private Autor autorId;
-    @JoinColumn(name = "CATEGORIA_ID", referencedColumnName = "CATEGORIA_ID")
+    @JoinColumn(name = "\"CATEGORIA_ID\"", referencedColumnName = "\"CATEGORIA_ID\"")
     @ManyToOne(optional = false)
     private CategoriaPoema categoriaId;
 

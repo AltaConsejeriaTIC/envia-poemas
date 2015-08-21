@@ -5,6 +5,8 @@
  */
 package co.hackathon.enviarpoemas.web.controller;
 
+import co.hackathon.enviarpoemas.dto.AutorDTO;
+import co.hackathon.enviarpoemas.dto.ListaBasicaDTO;
 import co.hackathon.enviarpoemas.dto.PoemaDTO;
 import co.hackathon.enviarpoemas.web.model.CreaEditaPoemaModel;
 import co.hackathon.enviarpoemas.web.model.ListaPoemasModel;
@@ -24,18 +26,18 @@ public class ListaPoemasController {
     @ManagedProperty(value ="#{listaPoemasModel}" )
     private ListaPoemasModel listaPoemasModel;
 
-    @ManagedProperty(value = "#{creaEditaPoemaModel}")
-    private CreaEditaPoemaModel creaEditaPoemaModel;
-
-    private static final String CREAR_POEMA_URL = "faces/administrador/creaOeditaPoema.xhtml";
+    @ManagedProperty(value = "#{creaEditaPoemaController}")
+    private CreaEditaPoemaController creaEditaPoemaController;    
+    
+    private static final String CREAR_POEMA_URL = "/faces/administrador/creaOeditaPoema.xhtml";
     
     public void buscarPoemas(){
         
     } 
     
     public String crearPoema(){
-        creaEditaPoemaModel.clean();
-        creaEditaPoemaModel.setPoemaDTO(new PoemaDTO());
+        
+        creaEditaPoemaController.iniciarCreacion();
         return FacesUtil.redirection(CREAR_POEMA_URL);
     }
     
@@ -43,9 +45,7 @@ public class ListaPoemasController {
         this.listaPoemasModel = listaPoemasModel;
     }
 
-    public void setCreaEditaPoemaModel(CreaEditaPoemaModel creaEditaPoemaModel) {
-        this.creaEditaPoemaModel = creaEditaPoemaModel;
-    }
-    
-    
+    public void setCreaEditaPoemaController(CreaEditaPoemaController creaEditaPoemaController) {
+        this.creaEditaPoemaController = creaEditaPoemaController;
+    }    
 }

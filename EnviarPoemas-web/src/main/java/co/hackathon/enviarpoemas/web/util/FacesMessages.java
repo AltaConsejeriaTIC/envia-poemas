@@ -18,6 +18,10 @@ public class FacesMessages {
         addMessage(null, FacesMessage.SEVERITY_ERROR, mensaje);
     }
     
+    public static void addInfo(String mensaje) {
+        addMessage(null, FacesMessage.SEVERITY_INFO, mensaje);
+    }
+    
     public static void addError(String id, String mensaje) {
         addMessage(id, FacesMessage.SEVERITY_ERROR, mensaje);
     }

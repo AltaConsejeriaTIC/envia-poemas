@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.hackathon.enviarpoemas.constantes;
+package co.hackathon.enviarpoemas.web.util;
 
 /**
  *
  * @author aatm
  */
-public enum CodigosErrorEnum {
-    CORREO_EXISTENTE,
-    AUTOR_NO_EXISTE;
+public class ConstantesWeb {
+    
 }

@@ -33,7 +33,7 @@ public class LoginModel implements Serializable{
         return usuarioDTO != null && usuarioDTO.getUsuarioId() != null;
     }
     
-    public boolean esAdministrador(){
+    public boolean isElUsuarioEsAdministrador(){
         if(hayUsuarioLogeado()){
             return usuarioDTO.tieneRolAdministrador();
         }

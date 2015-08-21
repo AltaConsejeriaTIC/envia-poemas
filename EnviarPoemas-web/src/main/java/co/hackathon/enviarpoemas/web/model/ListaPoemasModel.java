@@ -24,6 +24,12 @@ public class ListaPoemasModel{
     public ListaPoemasModel() {
     }
 
+    public void clean(){
+        listaPoemas = null;
+        poemaActual = null;
+        textoBusqueda = null;
+    }
+    
     public List<PoemaDTO> getListaPoemas() {
         return listaPoemas;
     }

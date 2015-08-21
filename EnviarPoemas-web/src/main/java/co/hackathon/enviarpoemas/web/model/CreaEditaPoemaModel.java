@@ -5,25 +5,30 @@
  */
 package co.hackathon.enviarpoemas.web.model;
 
+import co.hackathon.enviarpoemas.dto.ListaBasicaDTO;
 import co.hackathon.enviarpoemas.dto.PoemaDTO;
+import java.io.Serializable;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author aatm
  */
 @ManagedBean
-@RequestScoped
-public class CreaEditaPoemaModel {
+@SessionScoped
+public class CreaEditaPoemaModel implements Serializable{
     
     private PoemaDTO poemaDTO;
-
+    private List<ListaBasicaDTO> categoriasDTO;
+    
     public CreaEditaPoemaModel() {
     }
         
     public void clean(){
         poemaDTO = null;
+        categoriasDTO = null;
     }
 
     public PoemaDTO getPoemaDTO() {
@@ -32,6 +37,14 @@ public class CreaEditaPoemaModel {
 
     public void setPoemaDTO(PoemaDTO poemaDTO) {
         this.poemaDTO = poemaDTO;
+    }
+
+    public List<ListaBasicaDTO> getCategoriasDTO() {
+        return categoriasDTO;
+    }
+
+    public void setCategoriasDTO(List<ListaBasicaDTO> categoriasDTO) {
+        this.categoriasDTO = categoriasDTO;
     }
     
     

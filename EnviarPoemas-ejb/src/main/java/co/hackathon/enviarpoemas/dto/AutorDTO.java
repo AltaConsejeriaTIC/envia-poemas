@@ -5,15 +5,33 @@
  */
 package co.hackathon.enviarpoemas.dto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author aatm
  */
-public class AutorDTO {
+public class AutorDTO implements Serializable{
     
     private Integer autorId;
     private String nombreAutor;
 
+    public AutorDTO() {
+    }
+
+    
+    /**
+     * NamedQuery:
+     * - Autor.consultaTodosDTO
+     * @param autorId
+     * @param nombreAutor 
+     */
+    public AutorDTO(Integer autorId, String nombreAutor) {
+        this.autorId = autorId;
+        this.nombreAutor = nombreAutor;
+    }
+
+    
     public Integer getAutorId() {
         return autorId;
     }

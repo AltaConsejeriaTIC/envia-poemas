@@ -11,9 +11,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,23 +29,32 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author aatm
  */
 @Entity
-@Table(name = "CATEGORIA_POEMA")
+@Table(name = "\"CATEGORIA_POEMA\"")
 @XmlRootElement
 @NamedQueries({
-    })
+    @NamedQuery(name = "CategoriaPoema.consultaTodosDTO", 
+            query = "select new co.hackathon.enviarpoemas.dto.ListaBasicaDTO(cp.categoriaId, cp.nombre) from CategoriaPoema cp ")
+        
+})
 public class CategoriaPoema implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CATEGORIA_ID")
+    
+    @SequenceGenerator(
+        name="CATEGORIA_POEMA_SEQUENCE_GENERATOR",
+        sequenceName="\"SEQ_CATEGORIA_POEMA\"",
+        allocationSize=1)
+    
+    @Id    
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CATEGORIA_POEMA_SEQUENCE_GENERATOR")     
+    @Column(name = "\"CATEGORIA_ID\"")
     private Integer categoriaId;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "NOMBRE")
+    @Column(name = "\"NOMBRE\"")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    @OneToMany(mappedBy = "categoriaId")
     private Collection<Poema> poemaCollection;
 
     public CategoriaPoema() {
@@ -51,6 +64,10 @@ public class CategoriaPoema implements Serializable {
         this.categoriaId = categoriaId;
     }
 
+    public CategoriaPoema(String nombre) {
+        this.nombre = nombre;
+    }
+    
     public CategoriaPoema(Integer categoriaId, String nombre) {
         this.categoriaId = categoriaId;
         this.nombre = nombre;

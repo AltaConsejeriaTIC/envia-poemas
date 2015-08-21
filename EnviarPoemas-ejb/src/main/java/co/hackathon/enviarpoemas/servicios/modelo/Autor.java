@@ -11,9 +11,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,21 +28,36 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author aatm
  */
 @Entity
-@Table(name = "AUTOR")
+@Table(name = "\"AUTOR\"")
 @XmlRootElement
 @NamedQueries({
-    })
+    @NamedQuery(name = "Autor.consultaTodosDTO",
+            query = "select new co.hackathon.enviarpoemas.dto.ListaBasicaDTO(a.autorId, a.nombre)"
+            + " from Autor a "),
+    @NamedQuery(name = "Autor.consultaNombresPoetasXnombreSimilar",
+            query = "select a.nombre from Autor a where lower(a.nombre) like lower(:nombreAutor) "),
+    @NamedQuery(name = "Autor.consultaIdXnombre",
+            query = "select a.autorId from Autor a where lower(a.nombre) = lower(:nombreAutor) ")
+
+})
 public class Autor implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
+    @SequenceGenerator(
+            name = "AUTOR_SEQUENCE_GENERATOR",
+            sequenceName = "\"SEQ_AUTOR\"",
+            allocationSize = 1
+    )
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTOR_SEQUENCE_GENERATOR")
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "AUTOR_ID")
+    @Column(name = "\"AUTOR_ID\"")
     private Integer autorId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "NOMBRE")
-    private int nombre;
+    @Column(name = "\"NOMBRE\"")
+    private String nombre;
     @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "autorId")
     private Collection<Poema> poemaCollection;
 
@@ -49,7 +68,11 @@ public class Autor implements Serializable {
         this.autorId = autorId;
     }
 
-    public Autor(Integer autorId, int nombre) {
+    public Autor(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Autor(Integer autorId, String nombre) {
         this.autorId = autorId;
         this.nombre = nombre;
     }
@@ -62,11 +85,11 @@ public class Autor implements Serializable {
         this.autorId = autorId;
     }
 
-    public int getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(int nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -103,5 +126,5 @@ public class Autor implements Serializable {
     public String toString() {
         return "co.hackathon.enviarpoemas.servicios.modelo.Autor[ autorId=" + autorId + " ]";
     }
-    
+
 }

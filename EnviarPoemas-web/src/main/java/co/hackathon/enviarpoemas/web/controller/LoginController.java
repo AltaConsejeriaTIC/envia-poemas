@@ -39,7 +39,7 @@ public class LoginController {
     @ManagedProperty(value = "#{crearUsuarioModel}")
     private CrearUsuarioModel crearUsuarioModel;
     
-    public static final String INICIO = "faces/index.xhtml";
+    public static final String INICIO = "/faces/index.xhtml";
     
     public String crearUsuario() {
         try {

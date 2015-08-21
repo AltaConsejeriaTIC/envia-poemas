@@ -10,15 +10,12 @@
     <h:body>
         <ui:composition template="/template/commonLayout.xhtml">
             <ui:define name="content">
-                <h:form id="form">
-                    <h:panelGroup rendered="#{loginModel.esAdministrador}">
-                        <p:commandLink action="#{listaPoemasController.crearPoema}" 
-                                       value="Crear poema"/>
-                    </h:panelGroup>
+                <h:form id="form">                   
                     
                     Buscar poemas
 
                     <h:outputText value="Ingresa palabras clave para buscar el poema"/>
+                    
                     <p:commandButton value="Buscar" action="#{listaPoemasController.buscarPoemas()}"/>
                 </h:form>
             </ui:define>

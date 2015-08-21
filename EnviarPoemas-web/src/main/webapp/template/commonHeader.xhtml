@@ -40,6 +40,12 @@
                         <p:commandLink value="Cerrar sesión" action="#{loginController.cerrarSesion}"/>
                     </h:panelGroup>
                 </p:panelGrid>
+                
+                <p:panelGrid columns="3" rendered="#{loginModel.elUsuarioEsAdministrador}" id="menuAdministracion">
+                    <p:commandLink action="#{menuController.irAdministrarAutores()}" value="Administrar autores"/>
+                    <p:commandLink action="#{menuController.irAdministrarCategorias()}" value="Administrar categorias"/>
+                    <p:commandLink action="#{listaPoemasController.crearPoema}" value="Crear poema"/>                    
+                </p:panelGrid>
             </h:form>
         </ui:composition>
     </h:body>

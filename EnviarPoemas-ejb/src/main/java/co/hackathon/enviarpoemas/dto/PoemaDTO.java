@@ -17,6 +17,41 @@ public class PoemaDTO implements Serializable{
     private String titulo;
     private AutorDTO autorDTO;
     private ListaBasicaDTO categoriaPoemaDTO;
+
+    public PoemaDTO() {
+    }
+
+    
+    /**
+     * NamedQuery:
+     * - Poema.consultaPoemaDTOTipoGoogle
+     * @param poemaId
+     * @param titulo
+     * @param nombreAutor 
+     */
+    public PoemaDTO(Integer poemaId, String titulo, String nombreAutor) {
+        this.poemaId = poemaId;
+        this.titulo = titulo;
+        this.autorDTO = new AutorDTO();
+        this.autorDTO.setNombreAutor(nombreAutor);
+    }
+
+    /**
+     * NamedQuery:
+     * -Poema.consultaDetallePoemaDTOXid
+     * @return 
+     */
+    public PoemaDTO(Integer poemaId, String texto, String titulo, 
+            Integer autorId, String nombreAutor, 
+            Integer categoriaPoemaId, String nombreCategoria) {
+        this.poemaId = poemaId;
+        this.texto = texto;
+        this.titulo = titulo;
+        this.setAutorDTO(new AutorDTO(autorId, nombreAutor));
+        this.setCategoriaPoemaDTO(new ListaBasicaDTO(categoriaPoemaId, nombreCategoria));
+    }
+    
+    
     
     public Integer getPoemaId() {
         return poemaId;

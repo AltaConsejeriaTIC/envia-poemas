@@ -6,6 +6,7 @@
 package co.hackathon.enviarpoemas.web.model;
 
 import co.hackathon.enviarpoemas.dto.PoemaDTO;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -16,7 +17,7 @@ import javax.faces.bean.SessionScoped;
  */
 @SessionScoped
 @ManagedBean
-public class ListaPoemasModel{
+public class ListaPoemasModel implements Serializable{
     private List<PoemaDTO> listaPoemas;
     private PoemaDTO poemaActual;
     private String textoBusqueda;

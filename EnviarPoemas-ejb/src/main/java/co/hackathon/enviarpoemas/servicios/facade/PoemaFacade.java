@@ -9,6 +9,7 @@ import co.hackathon.enviarpoemas.dto.PoemaDTO;
 import co.hackathon.enviarpoemas.exceptions.BusinessException;
 import co.hackathon.enviarpoemas.servicios.modelo.Poema;
 import co.hackathon.enviarpoemas.servicios.services.PoemaService;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -53,5 +54,17 @@ public class PoemaFacade {
         p.setTexto(poemaDTO.getTexto());
         p.setTitulo(poemaDTO.getTitulo());
         return p;
+    }
+    
+    public List<PoemaDTO> buscaPoemaTipoGoogle(String texto){
+        return em.createNamedQuery("Poema.consultaPoemaDTOTipoGoogle", PoemaDTO.class)
+                .setParameter("texto", "%"+texto+"%")
+                .getResultList();
+    }
+    
+    public PoemaDTO consultaDetallePoema(Integer poemaID){
+        return em.createNamedQuery("Poema.consultaDetallePoemaDTOXid", PoemaDTO.class)
+                .setParameter("poemaID", poemaID)
+                .getSingleResult();
     }
 }

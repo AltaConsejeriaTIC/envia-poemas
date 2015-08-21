@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -29,7 +30,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "\"POEMA\"")
 @XmlRootElement
 @NamedQueries({
-    })
+    @NamedQuery(name = "Poema.consultaPoemaDTOTipoGoogle", 
+            query = "select new co.hackathon.enviarpoemas.dto.PoemaDTO(p.poemaId, p.titulo, a.nombre) "
+                    + "from Poema p join p.autorId a join p.categoriaId c "
+                    + " where lower(p.titulo) like lower(:texto) "
+                    + "or lower(p.texto) like lower(:texto) "
+                    + " or lower(a.nombre) like lower(:texto) "
+                    + " or lower(c.nombre) like lower(:texto) "),
+    @NamedQuery(name = "Poema.consultaDetallePoemaDTOXid", 
+            query = "select new co.hackathon.enviarpoemas.dto.PoemaDTO(p.poemaId, p.titulo, p.texto, "
+                    + "a.autorId, a.nombre, c.categoriaId, c.nombre)"
+                    + "from Poema p join p.autorId a join p.categoriaId c "
+                    + "where p.poemaId = :poemaID")
+    
+
+})
 public class Poema implements Serializable {
     private static final long serialVersionUID = 1L;
     @SequenceGenerator(

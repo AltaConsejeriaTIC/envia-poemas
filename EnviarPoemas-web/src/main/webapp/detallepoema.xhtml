@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/commonLayout.xhtml">
+            <ui:define name="content">
+                <h:form id="form">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Titulo"/>            
+                        <h:outputText value="#{detallePoemaModel.poemaDTO.titulo}" id="tituloId"/>
+
+                        <h:outputText value="Autor"/>
+                        <h:outputText value="#{detallePoemaModel.poemaDTO.autorDTO.nombreAutor}"/>            
+
+                        <h:outputText value="Categoria poema"/>
+                        <h:outputText value="#{detallePoemaModel.poemaDTO.categoriaPoemaDTO.nombre}"/>
+
+                        <p:outputLabel value="Texto" for="textoId"/>
+                        <p:inputTextarea value="#{detallePoemaModel.poemaDTO.texto}" id="textoId"
+                                         rows="10" cols="20" disabled="true"/>            
+
+                        <p:panelGrid columns="2">
+                            <p:commandButton action="#{creaEditaPoemaController.crearOeditar}" 
+                                             value="Enviar a correo"/>
+                            <p:commandButton action="#{detallePoemaController.irAIncio}" value="Regresar"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

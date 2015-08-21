@@ -15,8 +15,23 @@
                     Buscar poemas
 
                     <h:outputText value="Ingresa palabras clave para buscar el poema"/>
+                    <p:inputText value="#{listaPoemasModel.textoBusqueda}" id="textoId"/>
+                    <p:commandButton value="Buscar" action="#{listaPoemasController.buscarPoemas()}" 
+                                     update="form:tablaPoemas"
+                                     process="form:textoId, @this"/>
                     
-                    <p:commandButton value="Buscar" action="#{listaPoemasController.buscarPoemas()}"/>
+                    <p:dataTable value="#{listaPoemasModel.listaPoemas}" var="poemaDTO" selection="#{listaPoemasModel.poemaActual}"
+                                 rowKey="#{poemaDTO.poemaId}" rows="10" paginator="true"
+                                 id="tablaPoemas">
+                        <p:column selectionMode="single"/>
+                        <p:column headerText="Titulo poema">
+                            <h:outputText value="#{poemaDTO.titulo}"/>
+                        </p:column>
+                        <p:column headerText="Autor poema">
+                            <h:outputText value="#{poemaDTO.autorDTO.nombreAutor}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton action="#{listaPoemasController.verDetalle}" value="Ver detalle" process="@form"/>
                 </h:form>
             </ui:define>
         </ui:composition>

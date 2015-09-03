@@ -76,6 +76,12 @@ public class LoginController {
         FacesUtil.getSession().invalidate();
         return FacesUtil.redirection(INICIO);
     }
+    
+    public String irAIncio(){
+        
+        return FacesUtil.redirection(INICIO);
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="set get">    
     public void setLoginModel(LoginModel loginModel) {
         this.loginModel = loginModel;

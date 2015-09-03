@@ -11,32 +11,48 @@
         <ui:composition template="/template/commonLayout.xhtml">
             <ui:define name="content">
                 <h:form id="form">                   
-                    
-                    Buscar poemas
 
-                    <h:outputText value="Ingresa palabras clave para buscar el poema"/>
-                    <p:inputText value="#{listaPoemasModel.textoBusqueda}" id="textoId"/>
+                    Buscar poemas
+                    <br/><br/>
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Ingresa palabras clave para buscar el poema"/>
+                        <p:inputText value="#{listaPoemasModel.textoBusqueda}" id="textoId"
+                                     size="60"/>
+                    </p:panelGrid>
                     <p:commandButton value="Buscar" action="#{listaPoemasController.buscarPoemas()}" 
-                                     update="form:tablaPoemas"
+                                     update="form:tablaPoemas, form:panelDetalle"
                                      process="form:textoId, @this"/>
-                    
-                    <p:dataTable value="#{listaPoemasModel.listaPoemas}" var="poemaDTO" selection="#{listaPoemasModel.poemaActual}"
+                    <br/><br/>
+                    <h:panelGroup id="panelDetalle">
+                        <p:commandButton action="#{listaPoemasController.verDetalle}" value="Ver detalle" process="@form"                                     
+                                         id="btnDetalle"
+                                         rendered="#{listaPoemasModel.poemaActual ne null and 
+                                                     listaPoemasModel.poemaActual.poemaId ne null}"
+                                         />
+                    </h:panelGroup>
+                    <p:dataTable value="#{listaPoemasModel.listaPoemas}" var="poemaDTO"
+                                 selection="#{listaPoemasModel.poemaActual}"
                                  rowKey="#{poemaDTO.poemaId}" rows="10" paginator="true"
-                                 id="tablaPoemas">
+                                 id="tablaPoemas" emptyMessage="No se encuentran registros"
+                                 selectionMode="single">
+                        <p:ajax event="rowSelect" update=":form:panelDetalle" process="@form"/>
+                        <p:ajax event="rowUnselect" update=":form:panelDetalle" process="@form"/>
+
                         <p:column selectionMode="single"/>
+
                         <p:column headerText="Titulo poema">
                             <h:outputText value="#{poemaDTO.titulo}"/>
                         </p:column>
                         <p:column headerText="Autor poema">
                             <h:outputText value="#{poemaDTO.autorDTO.nombreAutor}"/>
                         </p:column>
+
                     </p:dataTable>
-                    <p:commandButton action="#{listaPoemasController.verDetalle}" value="Ver detalle" process="@form"/>
                 </h:form>
             </ui:define>
         </ui:composition>
         <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+
     </h:body>
 </html>
 

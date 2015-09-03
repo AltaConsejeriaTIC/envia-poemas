@@ -24,13 +24,14 @@
 
                         <p:outputLabel value="Texto" for="textoId"/>
                         <p:inputTextarea value="#{detallePoemaModel.poemaDTO.texto}" id="textoId"
-                                         rows="10" cols="20" disabled="true"/>            
+                                         rows="10" cols="30" disabled="true"/>            
 
-                        <p:panelGrid columns="2">
-                            <p:commandButton action="#{creaEditaPoemaController.crearOeditar}" 
-                                             value="Enviar a correo"/>
-                            <p:commandButton action="#{detallePoemaController.irAIncio}" value="Regresar"/>
-                        </p:panelGrid>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2">
+                        <p:commandButton action="#{creaEditaPoemaController.crearOeditar}" 
+                                         value="Enviar a correo" 
+                                         rendered="#{loginModel.hayUsuarioLogeado()}"/>
+                        <p:commandButton action="#{detallePoemaController.irAIncio}" value="Regresar"/>
                     </p:panelGrid>
                 </h:form>
             </ui:define>

@@ -36,6 +36,7 @@ public class ListaPoemasController {
     private static final String DETALLE_POEMA_URL = "/faces/detallepoema.xhtml";
 
     public void buscarPoemas(){
+        listaPoemasModel.setPoemaActual(null);
         listaPoemasModel.setListaPoemas(poemaFacade.buscaPoemaTipoGoogle(listaPoemasModel.getTextoBusqueda()));
     } 
     

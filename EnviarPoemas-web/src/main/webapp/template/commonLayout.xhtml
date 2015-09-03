@@ -19,6 +19,19 @@
             .divcentrar{
                 margin: auto;                
             }
+            .div-flota-izquierda{
+                float: left;
+            }
+            .div-flota-derecha{
+                float: right;
+            }
+            .contenedor {
+                border-style: solid ;
+                border-color: #000; 
+                border-width: 2px;                 
+                overflow: hidden;
+                height:   1%;
+            }
         </style>
 
     </h:head>
@@ -28,11 +41,13 @@
                 <ui:include src="/template/commonHeader.xhtml" />
             </ui:insert>
         </div>
+        <br/><br/>
         <div id="content">
             <ui:insert name="content" >
 
             </ui:insert>
         </div>
+        <br/><br/>
         <div id="footer">
             <ui:insert name="footer" >
                 <ui:include src="/template/commonFooter.xhtml" />

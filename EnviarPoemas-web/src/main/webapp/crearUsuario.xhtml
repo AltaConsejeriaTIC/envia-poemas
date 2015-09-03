@@ -10,34 +10,36 @@
     <h:body>
         <ui:composition template="/template/commonLayout.xhtml">
             <ui:define name="content">
-                <h:form id="formcreausuario">
-                    Crear usuario nuevo
-                    <p:messages globalOnly="true" showDetail="false"/>
-                    <p:panelGrid columns="2">
-                        <p:outputLabel for="nombreId" value="Nombre: "/>
-                        <h:panelGroup>
-                            <p:inputText value="#{crearUsuarioModel.usuarioDTO.nombre}" id="nombreId"/>
-                            <p:message for="nombreId"/>
-                        </h:panelGroup>
-                        <p:outputLabel for="correoId" value="Correo electronico: "/>
-                        <h:panelGroup>
-                            <p:inputText value="#{crearUsuarioModel.usuarioDTO.correoElectronico}" id="correoId"/>
-                            <p:message for="correoId"/>
-                        </h:panelGroup>
+                <div>
+                    <h:form id="formcreausuario">
+                        Crear usuario nuevo
+                        <p:messages globalOnly="true" showDetail="false"/>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="nombreId" value="Nombre: "/>
+                            <h:panelGroup>
+                                <p:inputText value="#{crearUsuarioModel.usuarioDTO.nombre}" id="nombreId"/>
+                                <p:message for="nombreId"/>
+                            </h:panelGroup>
+                            <p:outputLabel for="correoId" value="Correo electronico: "/>
+                            <h:panelGroup>
+                                <p:inputText value="#{crearUsuarioModel.usuarioDTO.correoElectronico}" id="correoId"/>
+                                <p:message for="correoId"/>
+                            </h:panelGroup>
 
 
-                        <p:outputLabel for="claveId" value="Clave: "/>
-                        <h:panelGroup>
-                            <p:password value="#{crearUsuarioModel.usuarioDTO.clave}" id="claveId"/>
-                        </h:panelGroup>
-                        <p:outputLabel for="confirmarClaveId" value="Confirmar clave: "/>
-                        <p:password value="#{crearUsuarioModel.usuarioDTO.claveConfirmar}" 
-                                    id="confirmarClaveId" 
-                                    />                                
+                            <p:outputLabel for="claveId" value="Clave: "/>
+                            <h:panelGroup>
+                                <p:password value="#{crearUsuarioModel.usuarioDTO.clave}" id="claveId"/>
+                            </h:panelGroup>
+                            <p:outputLabel for="confirmarClaveId" value="Confirmar clave: "/>
+                            <p:password value="#{crearUsuarioModel.usuarioDTO.claveConfirmar}" 
+                                        id="confirmarClaveId" 
+                                        />                                
 
-                    </p:panelGrid>
-                    <p:commandButton value="Crear" action="#{loginController.crearUsuario()}" update="@form"/>
-                </h:form>
+                        </p:panelGrid>
+                        <p:commandButton value="Crear" action="#{loginController.crearUsuario()}" update="@form"/>
+                    </h:form>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>
